@@ -9,8 +9,8 @@ public class Room {
 	Random rand = new Random();
 	public Room(int sentWidth, int sentHeight)
 	{
-		width = sentWidth;
-		height = sentHeight;
+		height = sentWidth;
+		width = sentHeight;
 		roomArray = createRoom(width, height);
 	}
 	

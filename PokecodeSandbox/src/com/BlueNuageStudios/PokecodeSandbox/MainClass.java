@@ -37,6 +37,7 @@ public class MainClass implements ApplicationListener {
 	int currentCycle = 0;
 	int moveUpNumber = 0;
 	public ArrayList<String> instructionSet = new ArrayList<String>(); 
+	public ArrayList<Vector2> teleportValues = new ArrayList<Vector2>();
 	boolean repeat = false;
 	String gender = "male";
 	boolean changedGender = false;
@@ -45,6 +46,9 @@ public class MainClass implements ApplicationListener {
 	String characterDirection = "STOPPED";
 	int characterMoveAmmount = 0;
 	
+	Vector2 characterChordinates;
+	
+	Vector2 mapSize;
 	
 	@Override
 	public void create() {		
@@ -87,10 +91,15 @@ public class MainClass implements ApplicationListener {
 		pokemonOutsideTiles[7] = new TextureRegion(pokemonTiles, 0, 576, 64, 64); //bottomLeftCorner
 		pokemonOutsideTiles[8] = new TextureRegion(pokemonTiles, 128, 576, 64, 64); //bottomRightCorner
 		
+		mapSize = new Vector2(17, 11);
+		rooms.add(new Room((int)mapSize.x, (int)mapSize.y));
 		
-		rooms.add(new Room(11, 17));
+		//characterLocation = new Vector2(Math.round(w/64)/2 * 64 - 14 , Math.round(h/64)/2 * 64 + 15);
+		//characterChordinates = new Vector2((characterLocation.x + 14)/64 - 1, (characterLocation.y - 15)/64);
 		
-		characterLocation = new Vector2(Math.round(w/64)/2 * 64 - 14 , Math.round(h/64)/2 * 64 + 15);
+		characterLocation = new Vector2(0, 0);
+		teleport(new Vector2(8, 5));
+		
 		instructions = new Instructions(this);
 		characterRegion = characterFrames[0];
 		
@@ -104,6 +113,8 @@ public class MainClass implements ApplicationListener {
 	}
 
 	public void update() {
+	//teleport(new Vector2(8, 5));
+		
 		if(changedGender)
 		{
 			if(gender.equals("male"))
@@ -235,23 +246,61 @@ public class MainClass implements ApplicationListener {
 		{
 			if(instructionSet.get(0) == "UP")
 			{
-				completedTurn = false;
-				characterDirection = "UP";
+				if(characterChordinates.y < mapSize.y - 1)
+				{
+					completedTurn = false;
+					characterDirection = "UP";
+					characterChordinates.y++;
+				}
+				else
+				{
+					characterRegion = characterFrames[3];
+				}
 			}
 			else if(instructionSet.get(0) == "DOWN")
 			{
-				completedTurn = false;
-				characterDirection = "DOWN";	
+				if(characterChordinates.y > 0)
+				{
+					completedTurn = false;
+					characterDirection = "DOWN";
+					characterChordinates.y--;
+				}
+				else
+				{
+					characterRegion = characterFrames[0];
+				}
 			}
 			else if(instructionSet.get(0) == "LEFT")
 			{
-				completedTurn = false;
-				characterDirection = "LEFT";	
+				if(characterChordinates.x > 0)
+				{
+					completedTurn = false;
+					characterDirection = "LEFT";
+					characterChordinates.x--;
+				}
+				else
+				{
+					characterRegion = characterFrames[9];
+				}
 			}
 			else if(instructionSet.get(0) == "RIGHT")
 			{
-				completedTurn = false;
-				characterDirection = "RIGHT";	
+				
+				if(characterChordinates.x < mapSize.x - 1)
+				{
+					completedTurn = false;
+					characterDirection = "RIGHT";
+					characterChordinates.x++;
+				}
+				else
+				{
+					characterRegion = characterFrames[6];
+				}
+			}
+			else if(instructionSet.get(0) == "TELEPORT")
+			{
+				teleport(teleportValues.get(0));
+				teleportValues.remove(0);
 			}
 			
 			instructionSet.remove(0);
@@ -284,7 +333,12 @@ public class MainClass implements ApplicationListener {
 	}
 
 	
-	
+	public void teleport(Vector2 location)
+	{
+		characterChordinates = location;
+		characterLocation.set(new Vector2(characterChordinates.x * 64 + 14, characterChordinates.y * 64 + 15));
+		
+	}
 	
 	@Override
 	public void resize(int width, int height) {

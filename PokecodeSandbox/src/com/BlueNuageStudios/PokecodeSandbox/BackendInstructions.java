@@ -1,6 +1,7 @@
 package com.BlueNuageStudios.PokecodeSandbox;
 
 import com.BlueNuageStudios.PokecodeSandbox.MainClass;
+import com.badlogic.gdx.math.Vector2;
 
 public class BackendInstructions{
 	
@@ -26,6 +27,16 @@ public class BackendInstructions{
 	{
 		mainClass.instructionSet.add("RIGHT");
 	}
+	public void teleport(int x, int y)
+	{
+		mainClass.instructionSet.add("TELEPORT");
+		mainClass.teleportValues.add(new Vector2(x, y));
+	}
+	public void dropBall()
+	{
+		mainClass.instructionSet.add("POKEBALL");
+	}
+	
 	public void setRepeat(boolean repeat)
 	{
 		mainClass.repeat = repeat;
@@ -36,5 +47,6 @@ public class BackendInstructions{
 		mainClass.gender = gender;
 		mainClass.changedGender = true;
 	}
+	
 	
 }
