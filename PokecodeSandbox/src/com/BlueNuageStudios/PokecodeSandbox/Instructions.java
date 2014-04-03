@@ -6,16 +6,20 @@ public class Instructions extends BackendInstructions{
 		getClass(mainClass); 
 		
 		//Settings here:
-		setRepeat(true);
+		setRepeat(false);
 		setGender("male");
 	}
 	
 	//Write instructions here:
 	public void instructions()
 	{
-		teleport(4, 4);
 		moveUp();
 		moveUp();
+		moveDown();
+		moveLeft();
+		teleport(2, 2);
+		moveRight();
+		
 	}
 
 }

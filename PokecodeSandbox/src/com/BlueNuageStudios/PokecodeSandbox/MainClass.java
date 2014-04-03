@@ -50,6 +50,8 @@ public class MainClass implements ApplicationListener {
 	
 	Vector2 mapSize;
 	
+	ObjectManager objectManager;
+	
 	@Override
 	public void create() {		
 		w = Gdx.graphics.getWidth();
@@ -103,7 +105,9 @@ public class MainClass implements ApplicationListener {
 		instructions = new Instructions(this);
 		characterRegion = characterFrames[0];
 		
+		objectManager = new ObjectManager(pokemonTiles, mapSize);
 		
+		objectManager.addObject("POKEBALL", new Vector2(10, 10));
 	}
 	
 	@Override
@@ -113,8 +117,6 @@ public class MainClass implements ApplicationListener {
 	}
 
 	public void update() {
-	//teleport(new Vector2(8, 5));
-		
 		if(changedGender)
 		{
 			if(gender.equals("male"))
@@ -317,6 +319,8 @@ public class MainClass implements ApplicationListener {
 				batch.draw(pokemonOutsideTiles[rooms.get(0).roomArray[i][j]], i * 64 - hackCamera.x, j * 64 - hackCamera.y);
 			}
 		}
+		
+		objectManager.draw(batch);
 		
 		batch.draw(characterRegion, characterLocation.x, characterLocation.y);
 		
