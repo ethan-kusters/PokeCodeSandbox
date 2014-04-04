@@ -7,7 +7,7 @@ public class Instructions extends BackendInstructions{
 		
 		//Settings here:
 		setRepeat(false);
-		setGender("female");
+		setGender("male");
 	}
 	
 	//Write instructions here:
@@ -30,7 +30,7 @@ public class Instructions extends BackendInstructions{
 		}
 		for(int i = 0; i < 3; i++)
 		{
-			dropBall();
+			dropTree();
 			moveLeft();
 		}
 		dropBall();

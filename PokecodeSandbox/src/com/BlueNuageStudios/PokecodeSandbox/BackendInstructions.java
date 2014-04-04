@@ -48,6 +48,10 @@ public class BackendInstructions{
 	{
 		mainClass.instructionSet.add("FLOWER");
 	}
+	public void dropTree()
+	{
+		mainClass.instructionSet.add("TREE");
+	}
 	
 	public void setRepeat(boolean repeat)
 	{

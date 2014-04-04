@@ -328,6 +328,11 @@ public class MainClass implements ApplicationListener {
 				objectManager.addObject("FLOWER", new Vector2(characterChordinates.x, characterChordinates.y));
 				addedObject = true;
 			}
+			else if(instructionSet.get(0) == "TREE")
+			{
+				objectManager.addObject("TREE", new Vector2(characterChordinates.x, characterChordinates.y));
+				addedObject = true;
+			}
 			
 			instructionSet.remove(0);
 			turnWait = 0;

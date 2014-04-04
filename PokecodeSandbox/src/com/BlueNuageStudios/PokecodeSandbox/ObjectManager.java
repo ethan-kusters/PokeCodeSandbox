@@ -42,6 +42,11 @@ public class ObjectManager {
 			objects[(int)location.x][(int)location.y] = (new PlaceableObject(new TextureRegion(spriteSheet, 320, 896, 64, 64), location));
 			occupiedLocations.add(location);
 		}
+		else if(objectName.equals("TREE"))
+		{
+			objects[(int)location.x][(int)location.y] = (new PlaceableObject(new TextureRegion(spriteSheet, 448, 896, 64, 64), location));
+			occupiedLocations.add(location);
+		}
 		
 	}
 	
