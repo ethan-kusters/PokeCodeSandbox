@@ -36,6 +36,18 @@ public class BackendInstructions{
 	{
 		mainClass.instructionSet.add("POKEBALL");
 	}
+	public void dropPot()
+	{
+		mainClass.instructionSet.add("POTTEDPLANT");
+	}
+	public void dropBush()
+	{
+		mainClass.instructionSet.add("BUSH");
+	}
+	public void dropFlower()
+	{
+		mainClass.instructionSet.add("FLOWER");
+	}
 	
 	public void setRepeat(boolean repeat)
 	{

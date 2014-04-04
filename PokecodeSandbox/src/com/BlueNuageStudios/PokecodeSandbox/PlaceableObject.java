@@ -8,6 +8,7 @@ public class PlaceableObject {
 	TextureRegion objectImage;
 	Vector2 objectLocation;
 	boolean justAdded = true;
+	int waitCounter = 1;
 	
 	public PlaceableObject(TextureRegion objectImage, Vector2 objectLocation)
 	{

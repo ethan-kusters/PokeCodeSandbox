@@ -7,18 +7,36 @@ public class Instructions extends BackendInstructions{
 		
 		//Settings here:
 		setRepeat(false);
-		setGender("male");
+		setGender("female");
 	}
 	
 	//Write instructions here:
 	public void instructions()
 	{
-		moveUp();
-		moveUp();
+		for(int i = 0; i < 4; i++)
+		{
+			dropPot();
+			moveUp();
+		}
+		for(int i = 0; i < 4; i++)
+		{
+			dropBush();
+			moveRight();
+		}
+		for(int i = 0; i < 4; i++)
+		{
+			dropFlower();
+			moveDown();
+		}
+		for(int i = 0; i < 3; i++)
+		{
+			dropBall();
+			moveLeft();
+		}
+		dropBall();
 		moveDown();
-		moveLeft();
-		teleport(2, 2);
-		moveRight();
+		
+
 		
 	}
 

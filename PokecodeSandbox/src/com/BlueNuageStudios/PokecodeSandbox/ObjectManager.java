@@ -24,10 +24,25 @@ public class ObjectManager {
 	{
 		if(objectName.equals("POKEBALL"))
 		{
-			//objects.add(new PlaceableObject(new TextureRegion(spriteSheet, 320, 1664, 64, 64), location));
 			objects[(int)location.x][(int)location.y] = (new PlaceableObject(new TextureRegion(spriteSheet, 320, 1664, 64, 64), location));
 			occupiedLocations.add(location);
 		}
+		else if(objectName.equals("POTTEDPLANT"))
+		{
+			objects[(int)location.x][(int)location.y] = (new PlaceableObject(new TextureRegion(spriteSheet, 0, 384, 64, 64), location));
+			occupiedLocations.add(location);
+		}
+		else if(objectName.equals("BUSH"))
+		{
+			objects[(int)location.x][(int)location.y] = (new PlaceableObject(new TextureRegion(spriteSheet, 64, 384, 64, 64), location));
+			occupiedLocations.add(location);
+		}
+		else if(objectName.equals("FLOWER"))
+		{
+			objects[(int)location.x][(int)location.y] = (new PlaceableObject(new TextureRegion(spriteSheet, 320, 896, 64, 64), location));
+			occupiedLocations.add(location);
+		}
+		
 	}
 	
 	public void draw(SpriteBatch batch)
@@ -38,8 +53,6 @@ public class ObjectManager {
 			
 			if(!currentObject.justAdded())
 				batch.draw(currentObject.getImage(), currentObject.getLocation().x * 64, currentObject.getLocation().y * 64);
-			else
-				currentObject.justAdded = false;
 		}
 	}
 	
@@ -48,6 +61,19 @@ public class ObjectManager {
 		if(objects[(int)location.x][(int)location.y] != null)
 		{
 			objects[(int)location.x][(int)location.y] = null;
+		}
+	}
+	
+	public void update()
+	{
+		for(Vector2 objectsLocation: occupiedLocations)
+		{
+			currentObject = objects[(int)objectsLocation.x][(int)objectsLocation.y];
+			
+			if(currentObject.justAdded() && currentObject.waitCounter == 0)
+				currentObject.justAdded = false;
+			else if(currentObject.waitCounter > 0)
+					currentObject.waitCounter--;
 		}
 	}
 	

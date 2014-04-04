@@ -51,6 +51,7 @@ public class MainClass implements ApplicationListener {
 	Vector2 mapSize;
 	
 	ObjectManager objectManager;
+	boolean addedObject = false;
 	
 	@Override
 	public void create() {		
@@ -107,7 +108,7 @@ public class MainClass implements ApplicationListener {
 		
 		objectManager = new ObjectManager(pokemonTiles, mapSize);
 		
-		objectManager.addObject("POKEBALL", new Vector2(10, 10));
+		//objectManager.addObject("POKEBALL", new Vector2(10, 10));
 	}
 	
 	@Override
@@ -168,7 +169,7 @@ public class MainClass implements ApplicationListener {
 					characterRegion = characterFrames[4];
 				else if(characterMoveAmmount == 32)
 					characterRegion = characterFrames[5];
-				else if(characterMoveAmmount == 48)
+				else if(characterMoveAmmount == 54)
 					characterRegion = characterFrames[4];
 				
 				characterLocation.y += 2;
@@ -244,8 +245,11 @@ public class MainClass implements ApplicationListener {
 		update();
 		turnWait += Gdx.graphics.getDeltaTime();
 		
-		if(instructionSet.size() > 0 && turnWait >= turnLength && completedTurn)
+		if(instructionSet.size() > 0 && (turnWait >= turnLength || addedObject) && completedTurn)
 		{
+			objectManager.update();
+			addedObject = false;
+			
 			if(instructionSet.get(0) == "UP")
 			{
 				if(characterChordinates.y < mapSize.y - 1)
@@ -304,9 +308,33 @@ public class MainClass implements ApplicationListener {
 				teleport(teleportValues.get(0));
 				teleportValues.remove(0);
 			}
+			else if(instructionSet.get(0) == "POKEBALL")
+			{
+				objectManager.addObject("POKEBALL", new Vector2(characterChordinates.x, characterChordinates.y));
+				addedObject = true;
+			}
+			else if(instructionSet.get(0) == "POTTEDPLANT")
+			{
+				objectManager.addObject("POTTEDPLANT", new Vector2(characterChordinates.x, characterChordinates.y));
+				addedObject = true;
+			}
+			else if(instructionSet.get(0) == "BUSH")
+			{
+				objectManager.addObject("BUSH", new Vector2(characterChordinates.x, characterChordinates.y));
+				addedObject = true;
+			}
+			else if(instructionSet.get(0) == "FLOWER")
+			{
+				objectManager.addObject("FLOWER", new Vector2(characterChordinates.x, characterChordinates.y));
+				addedObject = true;
+			}
 			
 			instructionSet.remove(0);
 			turnWait = 0;
+		}
+		else
+		{
+			objectManager.update();
 		}
 
 		
