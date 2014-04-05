@@ -9,11 +9,14 @@ public class PlaceableObject {
 	Vector2 objectLocation;
 	boolean justAdded = true;
 	int waitCounter = 1;
+	float transparency = 0;
+	boolean collideable;
 	
-	public PlaceableObject(TextureRegion objectImage, Vector2 objectLocation)
+	public PlaceableObject(TextureRegion objectImage, Vector2 objectLocation, Boolean collideable)
 	{
 		this.objectImage = objectImage;
 		this.objectLocation = objectLocation;
+		this.collideable = collideable;
 	}
 	
 	public Vector2 getLocation()
@@ -29,5 +32,10 @@ public class PlaceableObject {
 	public Boolean justAdded()
 	{
 		return justAdded;
+	}
+	
+	public float getTransparency()
+	{
+		return transparency;
 	}
 }

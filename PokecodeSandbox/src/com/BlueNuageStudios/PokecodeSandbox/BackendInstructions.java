@@ -64,5 +64,20 @@ public class BackendInstructions{
 		mainClass.changedGender = true;
 	}
 	
+	public Vector2 getMapSize()
+	{
+		return mainClass.mapSize;
+	}
+	
+	public boolean isLocationEmpty(Vector2 location)
+	{
+		return mainClass.locationEmpty(location);
+	}
+	
+	public boolean isLocationInBounds(Vector2 location)
+	{
+		return mainClass.locationInBounds(location);
+	}
+	
 	
 }

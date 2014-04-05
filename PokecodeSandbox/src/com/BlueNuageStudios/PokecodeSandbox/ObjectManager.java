@@ -3,6 +3,7 @@ package com.BlueNuageStudios.PokecodeSandbox;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -13,6 +14,7 @@ public class ObjectManager {
 	PlaceableObject[][] objects;
 	ArrayList<Vector2> occupiedLocations = new ArrayList<Vector2>();
 	PlaceableObject currentObject;
+	Sprite objectSprite;
 	
 	public ObjectManager(Texture spriteSheet, Vector2 mapSize)
 	{
@@ -24,27 +26,27 @@ public class ObjectManager {
 	{
 		if(objectName.equals("POKEBALL"))
 		{
-			objects[(int)location.x][(int)location.y] = (new PlaceableObject(new TextureRegion(spriteSheet, 320, 1664, 64, 64), location));
+			objects[(int)location.x][(int)location.y] = (new PlaceableObject(new TextureRegion(spriteSheet, 320, 1664, 64, 64), location, true));
 			occupiedLocations.add(location);
 		}
 		else if(objectName.equals("POTTEDPLANT"))
 		{
-			objects[(int)location.x][(int)location.y] = (new PlaceableObject(new TextureRegion(spriteSheet, 0, 384, 64, 64), location));
+			objects[(int)location.x][(int)location.y] = (new PlaceableObject(new TextureRegion(spriteSheet, 0, 384, 64, 64), location, true));
 			occupiedLocations.add(location);
 		}
 		else if(objectName.equals("BUSH"))
 		{
-			objects[(int)location.x][(int)location.y] = (new PlaceableObject(new TextureRegion(spriteSheet, 64, 384, 64, 64), location));
+			objects[(int)location.x][(int)location.y] = (new PlaceableObject(new TextureRegion(spriteSheet, 64, 384, 64, 64), location, true));
 			occupiedLocations.add(location);
 		}
 		else if(objectName.equals("FLOWER"))
 		{
-			objects[(int)location.x][(int)location.y] = (new PlaceableObject(new TextureRegion(spriteSheet, 320, 896, 64, 64), location));
+			objects[(int)location.x][(int)location.y] = (new PlaceableObject(new TextureRegion(spriteSheet, 320, 896, 64, 64), location, false));
 			occupiedLocations.add(location);
 		}
 		else if(objectName.equals("TREE"))
 		{
-			objects[(int)location.x][(int)location.y] = (new PlaceableObject(new TextureRegion(spriteSheet, 448, 896, 64, 64), location));
+			objects[(int)location.x][(int)location.y] = (new PlaceableObject(new TextureRegion(spriteSheet, 448, 896, 64, 64), location, true));
 			occupiedLocations.add(location);
 		}
 		
@@ -57,7 +59,14 @@ public class ObjectManager {
 			currentObject = objects[(int)objectsLocation.x][(int)objectsLocation.y];
 			
 			if(!currentObject.justAdded())
-				batch.draw(currentObject.getImage(), currentObject.getLocation().x * 64, currentObject.getLocation().y * 64);
+			{
+				objectSprite = new Sprite(currentObject.getImage());
+				objectSprite.setPosition(currentObject.getLocation().x * 64, currentObject.getLocation().y * 64);
+				objectSprite.draw(batch, currentObject.getTransparency());
+				
+				if(currentObject.getTransparency() < 0.99f)
+					currentObject.transparency += 0.015f;
+			}
 		}
 	}
 	

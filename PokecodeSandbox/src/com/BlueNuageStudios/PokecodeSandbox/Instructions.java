@@ -1,5 +1,7 @@
 package com.BlueNuageStudios.PokecodeSandbox;
+
 public class Instructions extends BackendInstructions{
+	
 	//This is where your settings will go:
 	public Instructions(MainClass mainClass){
 		//IGNORE THIS:
@@ -10,33 +12,21 @@ public class Instructions extends BackendInstructions{
 		setGender("male");
 	}
 	
+	//Put variables here:
+	int example = 0;
+
 	//Write instructions here:
 	public void instructions()
 	{
-		for(int i = 0; i < 4; i++)
-		{
-			dropPot();
-			moveUp();
-		}
-		for(int i = 0; i < 4; i++)
-		{
-			dropBush();
-			moveRight();
-		}
-		for(int i = 0; i < 4; i++)
-		{
-			dropFlower();
-			moveDown();
-		}
-		for(int i = 0; i < 3; i++)
-		{
-			dropTree();
-			moveLeft();
-		}
-		dropBall();
+		moveUp();
+		dropTree();
+		moveRight();
+		dropTree();
 		moveDown();
-		
-
+		dropTree();
+		moveLeft();
+		dropTree();
+		moveDown();
 		
 	}
 

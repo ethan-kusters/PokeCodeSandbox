@@ -53,6 +53,8 @@ public class MainClass implements ApplicationListener {
 	ObjectManager objectManager;
 	boolean addedObject = false;
 	
+	String lastCommand = "NONE";
+	
 	@Override
 	public void create() {		
 		w = Gdx.graphics.getWidth();
@@ -100,13 +102,15 @@ public class MainClass implements ApplicationListener {
 		//characterLocation = new Vector2(Math.round(w/64)/2 * 64 - 14 , Math.round(h/64)/2 * 64 + 15);
 		//characterChordinates = new Vector2((characterLocation.x + 14)/64 - 1, (characterLocation.y - 15)/64);
 		
+		objectManager = new ObjectManager(pokemonTiles, mapSize);
+		
 		characterLocation = new Vector2(0, 0);
 		teleport(new Vector2(8, 5));
 		
 		instructions = new Instructions(this);
 		characterRegion = characterFrames[0];
 		
-		objectManager = new ObjectManager(pokemonTiles, mapSize);
+		
 		
 		//objectManager.addObject("POKEBALL", new Vector2(10, 10));
 	}
@@ -252,24 +256,27 @@ public class MainClass implements ApplicationListener {
 			
 			if(instructionSet.get(0) == "UP")
 			{
-				if(characterChordinates.y < mapSize.y - 1)
+				if(characterChordinates.y < mapSize.y - 1 && !objectUp())
 				{
 					completedTurn = false;
 					characterDirection = "UP";
 					characterChordinates.y++;
+					lastCommand = "MOVEMENT";
 				}
 				else
 				{
 					characterRegion = characterFrames[3];
 				}
+				
 			}
 			else if(instructionSet.get(0) == "DOWN")
 			{
-				if(characterChordinates.y > 0)
+				if(characterChordinates.y > 0 && !objectDown())
 				{
 					completedTurn = false;
 					characterDirection = "DOWN";
 					characterChordinates.y--;
+					lastCommand = "MOVEMENT";
 				}
 				else
 				{
@@ -278,11 +285,12 @@ public class MainClass implements ApplicationListener {
 			}
 			else if(instructionSet.get(0) == "LEFT")
 			{
-				if(characterChordinates.x > 0)
+				if(characterChordinates.x > 0 && !objectLeft())
 				{
 					completedTurn = false;
 					characterDirection = "LEFT";
 					characterChordinates.x--;
+					lastCommand = "MOVEMENT";
 				}
 				else
 				{
@@ -292,11 +300,12 @@ public class MainClass implements ApplicationListener {
 			else if(instructionSet.get(0) == "RIGHT")
 			{
 				
-				if(characterChordinates.x < mapSize.x - 1)
+				if(characterChordinates.x < mapSize.x - 1 && !objectRight())
 				{
 					completedTurn = false;
 					characterDirection = "RIGHT";
 					characterChordinates.x++;
+					lastCommand = "MOVEMENT";
 				}
 				else
 				{
@@ -307,31 +316,37 @@ public class MainClass implements ApplicationListener {
 			{
 				teleport(teleportValues.get(0));
 				teleportValues.remove(0);
+				lastCommand = "MOVEMENT";
 			}
 			else if(instructionSet.get(0) == "POKEBALL")
 			{
 				objectManager.addObject("POKEBALL", new Vector2(characterChordinates.x, characterChordinates.y));
 				addedObject = true;
+				lastCommand = "DROPOBJECT";
 			}
 			else if(instructionSet.get(0) == "POTTEDPLANT")
 			{
 				objectManager.addObject("POTTEDPLANT", new Vector2(characterChordinates.x, characterChordinates.y));
 				addedObject = true;
+				lastCommand = "DROPOBJECT";
 			}
 			else if(instructionSet.get(0) == "BUSH")
 			{
 				objectManager.addObject("BUSH", new Vector2(characterChordinates.x, characterChordinates.y));
 				addedObject = true;
+				lastCommand = "DROPOBJECT";
 			}
 			else if(instructionSet.get(0) == "FLOWER")
 			{
 				objectManager.addObject("FLOWER", new Vector2(characterChordinates.x, characterChordinates.y));
 				addedObject = true;
+				lastCommand = "DROPOBJECT";
 			}
 			else if(instructionSet.get(0) == "TREE")
 			{
 				objectManager.addObject("TREE", new Vector2(characterChordinates.x, characterChordinates.y));
 				addedObject = true;
+				lastCommand = "DROPOBJECT";
 			}
 			
 			instructionSet.remove(0);
@@ -339,7 +354,8 @@ public class MainClass implements ApplicationListener {
 		}
 		else
 		{
-			objectManager.update();
+			if(lastCommand.equals("MOVEMENT"))
+				objectManager.update();
 		}
 
 		
@@ -372,8 +388,11 @@ public class MainClass implements ApplicationListener {
 	
 	public void teleport(Vector2 location)
 	{
-		characterChordinates = location;
-		characterLocation.set(new Vector2(characterChordinates.x * 64 + 14, characterChordinates.y * 64 + 15));
+		if(locationInBounds(location) && locationEmpty(location))
+		{
+			characterChordinates = location;
+			characterLocation.set(new Vector2(characterChordinates.x * 64 + 14, characterChordinates.y * 64 + 15));
+		}
 		
 	}
 	
@@ -387,7 +406,63 @@ public class MainClass implements ApplicationListener {
 		//characterLocation = new Vector2(Math.round(w/48)/2 * 48 , Math.round(h/48)/2 * 48);
 	}
 	
-
+	public boolean objectUp()
+	{
+		PlaceableObject currentObject = objectManager.objects[(int)characterChordinates.x][(int)characterChordinates.y + 1];
+		if(currentObject != null && currentObject.collideable)
+		{
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean objectDown()
+	{
+		PlaceableObject currentObject = objectManager.objects[(int)characterChordinates.x][(int)characterChordinates.y - 1];
+		if(currentObject != null && currentObject.collideable)
+		{
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean objectLeft()
+	{
+		PlaceableObject currentObject = objectManager.objects[(int)characterChordinates.x - 1][(int)characterChordinates.y];
+		if(currentObject != null && currentObject.collideable)
+		{
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean objectRight()
+	{
+		PlaceableObject currentObject = objectManager.objects[(int)characterChordinates.x + 1][(int)characterChordinates.y];
+		if(currentObject != null && currentObject.collideable)
+		{
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean locationEmpty(Vector2 location)
+	{
+		PlaceableObject currentObject = objectManager.objects[(int)location.x][(int)location.y];
+		if(currentObject != null && currentObject.collideable)
+		{
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean locationInBounds(Vector2 location)
+	{
+		if(location.x < mapSize.x - 1 && location.x > 0 && location.y < mapSize.y - 1 && location.y > 0)
+			return true;
+		else
+			return false;
+	}
 	
 	@Override
 	public void pause() {
