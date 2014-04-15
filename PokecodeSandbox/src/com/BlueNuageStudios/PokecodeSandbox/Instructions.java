@@ -6,27 +6,21 @@ public class Instructions extends BackendInstructions{
 	public Instructions(MainClass mainClass){
 		//IGNORE THIS:
 		getClass(mainClass); 
-		
 		//Settings here:
-		setRepeat(false);
 		setGender("male");
 	}
 	
 	//Put variables here:
 	int example = 0;
-
+	
 	//Write instructions here:
 	public void instructions()
 	{
-		moveUp();
-		dropTree();
-		moveRight();
-		dropTree();
-		moveDown();
-		dropTree();
-		moveLeft();
-		dropTree();
-		moveDown();
+		while(example < 4)
+		{
+			moveUp();
+			example = example + 1;
+		}
 		
 	}
 

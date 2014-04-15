@@ -1,6 +1,7 @@
 package com.BlueNuageStudios.PokecodeSandbox;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -15,7 +16,8 @@ public class ObjectManager {
 	ArrayList<Vector2> occupiedLocations = new ArrayList<Vector2>();
 	PlaceableObject currentObject;
 	Sprite objectSprite;
-	
+	ArrayList<Integer> usedLetters = new ArrayList<Integer>();
+	String testString = "test";
 	public ObjectManager(Texture spriteSheet, Vector2 mapSize)
 	{
 		this.spriteSheet = spriteSheet;
