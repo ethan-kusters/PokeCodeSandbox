@@ -8,6 +8,7 @@ public class PlaceableObject {
 	TextureRegion objectImage;
 	Vector2 objectLocation;
 	boolean justAdded = true;
+	boolean remove = false;
 	int waitCounter = 1;
 	float transparency = 0;
 	boolean collideable;

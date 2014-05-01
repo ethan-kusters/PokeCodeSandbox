@@ -32,6 +32,7 @@ public class BackendInstructions{
 		mainClass.instructionSet.add("TELEPORT");
 		mainClass.teleportValues.add(new Vector2(x, y));
 	}
+	
 	public void dropBall()
 	{
 		mainClass.instructionSet.add("POKEBALL");
@@ -51,6 +52,28 @@ public class BackendInstructions{
 	public void dropTree()
 	{
 		mainClass.instructionSet.add("TREE");
+	}
+	
+	public void removeUp()
+	{
+		mainClass.instructionSet.add("REMOVEUP");
+	}
+	public void removeDown()
+	{
+		mainClass.instructionSet.add("REMOVEDOWN");
+	}
+	public void removeLeft()
+	{
+		mainClass.instructionSet.add("REMOVELEFT");
+	}
+	public void removeRight()
+	{
+		mainClass.instructionSet.add("REMOVERIGHT");
+	}
+	
+	public void checkLeft()
+	{
+		mainClass.instructionSet.add("CHECKLEFT");
 	}
 	
 	public void setRepeat(boolean repeat)

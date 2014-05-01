@@ -1,6 +1,7 @@
 package com.BlueNuageStudios.PokecodeSandbox;
 
-public class Instructions extends BackendInstructions{
+public class Instructions extends BackendInstructions
+{
 	
 	//This is where your settings will go:
 	public Instructions(MainClass mainClass){
@@ -16,10 +17,15 @@ public class Instructions extends BackendInstructions{
 	//Write instructions here:
 	public void instructions()
 	{
-		while(example < 4)
+		for(int i = 0; i < 5; i++)
 		{
-			moveUp();
-			example = example + 1;
+			dropBall();
+			moveRight();
+		}
+		for(int i = 0; i < 5; i++)
+		{
+			removeLeft();
+			moveLeft();
 		}
 		
 	}

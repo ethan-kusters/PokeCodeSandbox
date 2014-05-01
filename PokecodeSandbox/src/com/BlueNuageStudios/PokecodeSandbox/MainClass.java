@@ -51,7 +51,7 @@ public class MainClass implements ApplicationListener {
 	Vector2 mapSize;
 	
 	ObjectManager objectManager;
-	boolean addedObject = false;
+	boolean dontWait = false;
 	
 	String lastCommand = "NONE";
 	
@@ -240,19 +240,11 @@ public class MainClass implements ApplicationListener {
 		
 	}
 	
-	
-	@Override
-	public void render() {	
-		Gdx.gl.glClearColor(0, 0, 0, 1);
-		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		
-		update();
-		turnWait += Gdx.graphics.getDeltaTime();
-		
-		if(instructionSet.size() > 0 && (turnWait >= turnLength || addedObject) && completedTurn)
+	public void instructionsTech(){
+		if(instructionSet.size() > 0 && (turnWait >= turnLength || dontWait) && completedTurn)
 		{
 			objectManager.update();
-			addedObject = false;
+			dontWait = false;
 			
 			if(instructionSet.get(0) == "UP")
 			{
@@ -321,32 +313,66 @@ public class MainClass implements ApplicationListener {
 			else if(instructionSet.get(0) == "POKEBALL")
 			{
 				objectManager.addObject("POKEBALL", new Vector2(characterChordinates.x, characterChordinates.y));
-				addedObject = true;
+				dontWait = true;
 				lastCommand = "DROPOBJECT";
 			}
 			else if(instructionSet.get(0) == "POTTEDPLANT")
 			{
 				objectManager.addObject("POTTEDPLANT", new Vector2(characterChordinates.x, characterChordinates.y));
-				addedObject = true;
+				dontWait = true;
 				lastCommand = "DROPOBJECT";
 			}
 			else if(instructionSet.get(0) == "BUSH")
 			{
 				objectManager.addObject("BUSH", new Vector2(characterChordinates.x, characterChordinates.y));
-				addedObject = true;
+				dontWait = true;
 				lastCommand = "DROPOBJECT";
 			}
 			else if(instructionSet.get(0) == "FLOWER")
 			{
 				objectManager.addObject("FLOWER", new Vector2(characterChordinates.x, characterChordinates.y));
-				addedObject = true;
+				dontWait = true;
 				lastCommand = "DROPOBJECT";
 			}
 			else if(instructionSet.get(0) == "TREE")
 			{
 				objectManager.addObject("TREE", new Vector2(characterChordinates.x, characterChordinates.y));
-				addedObject = true;
+				dontWait = true;
 				lastCommand = "DROPOBJECT";
+			}
+			else if(instructionSet.get(0) == "REMOVEUP")
+			{
+				characterRegion = characterFrames[3]; //Turn character up
+				objectManager.removeObject(new Vector2(characterChordinates.x, characterChordinates.y + 1));
+				dontWait = true;
+				lastCommand = "REMOVEOBJECT";
+			}
+			else if(instructionSet.get(0) == "REMOVEDOWN")
+			{
+				characterRegion = characterFrames[0]; //Turn character down
+				objectManager.removeObject(new Vector2(characterChordinates.x, characterChordinates.y - 1));
+				dontWait = true;
+				lastCommand = "REMOVEOBJECT";
+			}
+			else if(instructionSet.get(0) == "REMOVELEFT")
+			{
+				characterRegion = characterFrames[9]; //Turn character left
+				objectManager.removeObject(new Vector2(characterChordinates.x - 1, characterChordinates.y));
+				dontWait = true;
+				lastCommand = "REMOVEOBJECT";
+			}
+			else if(instructionSet.get(0) == "REMOVERIGHT")
+			{
+				characterRegion = characterFrames[6]; //Turn character right
+				objectManager.removeObject(new Vector2(characterChordinates.x + 1, characterChordinates.y));
+				dontWait = true;
+				lastCommand = "REMOVEOBJECT";
+			}
+			else if(instructionSet.get(0) == "CHECKUP")
+			{
+				objectUp();
+				dontWait = true;
+				lastCommand = "CHECK";
 			}
 			
 			instructionSet.remove(0);
@@ -354,9 +380,20 @@ public class MainClass implements ApplicationListener {
 		}
 		else
 		{
-			if(lastCommand.equals("MOVEMENT"))
+			if(lastCommand.equals("MOVEMENT") || lastCommand.equals("REMOVEOBJECT") || lastCommand.equals("CHECK"))
 				objectManager.update();
 		}
+	}
+	
+	@Override
+	public void render() {	
+		Gdx.gl.glClearColor(0, 0, 0, 1);
+		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		
+		update();
+		turnWait += Gdx.graphics.getDeltaTime();
+		
+		instructionsTech();
 
 		
 		batch.begin();
@@ -409,7 +446,7 @@ public class MainClass implements ApplicationListener {
 	public boolean objectUp()
 	{
 		PlaceableObject currentObject = objectManager.objects[(int)characterChordinates.x][(int)characterChordinates.y + 1];
-		if(currentObject != null && currentObject.collideable)
+		if(currentObject != null && currentObject.collideable && !currentObject.remove)
 		{
 			return true;
 		}
@@ -419,7 +456,7 @@ public class MainClass implements ApplicationListener {
 	public boolean objectDown()
 	{
 		PlaceableObject currentObject = objectManager.objects[(int)characterChordinates.x][(int)characterChordinates.y - 1];
-		if(currentObject != null && currentObject.collideable)
+		if(currentObject != null && currentObject.collideable && !currentObject.remove)
 		{
 			return true;
 		}
@@ -429,7 +466,7 @@ public class MainClass implements ApplicationListener {
 	public boolean objectLeft()
 	{
 		PlaceableObject currentObject = objectManager.objects[(int)characterChordinates.x - 1][(int)characterChordinates.y];
-		if(currentObject != null && currentObject.collideable)
+		if(currentObject != null && currentObject.collideable && !currentObject.remove)
 		{
 			return true;
 		}
@@ -439,7 +476,7 @@ public class MainClass implements ApplicationListener {
 	public boolean objectRight()
 	{
 		PlaceableObject currentObject = objectManager.objects[(int)characterChordinates.x + 1][(int)characterChordinates.y];
-		if(currentObject != null && currentObject.collideable)
+		if(currentObject != null && currentObject.collideable && !currentObject.remove)
 		{
 			return true;
 		}
@@ -449,7 +486,7 @@ public class MainClass implements ApplicationListener {
 	public boolean locationEmpty(Vector2 location)
 	{
 		PlaceableObject currentObject = objectManager.objects[(int)location.x][(int)location.y];
-		if(currentObject != null && currentObject.collideable)
+		if(currentObject != null && currentObject.collideable && !currentObject.remove)
 		{
 			return false;
 		}

@@ -56,8 +56,9 @@ public class ObjectManager {
 	
 	public void draw(SpriteBatch batch)
 	{
-		for(Vector2 objectsLocation: occupiedLocations)
+		for(int i = 0; i < occupiedLocations.size(); i++)
 		{
+			Vector2 objectsLocation = occupiedLocations.get(i);
 			currentObject = objects[(int)objectsLocation.x][(int)objectsLocation.y];
 			
 			if(!currentObject.justAdded())
@@ -66,17 +67,28 @@ public class ObjectManager {
 				objectSprite.setPosition(currentObject.getLocation().x * 64, currentObject.getLocation().y * 64);
 				objectSprite.draw(batch, currentObject.getTransparency());
 				
-				if(currentObject.getTransparency() < 0.99f)
+				if(currentObject.getTransparency() < 0.99f && currentObject.remove == false)
 					currentObject.transparency += 0.015f;
+				
+				if(currentObject.remove && currentObject.getTransparency() > 0.1f)
+				{
+					currentObject.transparency -= 0.035f;
+				}
+				else if(currentObject.remove && currentObject.getTransparency() <= 0.1f)
+				{
+					objects[(int)objectsLocation.x][(int)objectsLocation.y] = null;
+					occupiedLocations.remove(i);
+				}
 			}
 		}
 	}
 	
 	public void removeObject(Vector2 location)
 	{
-		if(objects[(int)location.x][(int)location.y] != null)
+		currentObject = objects[(int)location.x][(int)location.y];
+		if(currentObject != null)
 		{
-			objects[(int)location.x][(int)location.y] = null;
+			currentObject.remove = true;
 		}
 	}
 	
