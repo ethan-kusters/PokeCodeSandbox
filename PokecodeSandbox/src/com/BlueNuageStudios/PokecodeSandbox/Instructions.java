@@ -8,26 +8,21 @@ public class Instructions extends BackendInstructions
 		//IGNORE THIS:
 		getClass(mainClass); 
 		//Settings here:
+		setRepeat(false);
 		setGender("male");
 	}
 	
+	
+	
 	//Put variables here:
 	int example = 0;
+	int Bob = 15;
 	
 	//Write instructions here:
 	public void instructions()
 	{
-		for(int i = 0; i < 5; i++)
-		{
-			dropBall();
-			moveRight();
-		}
-		for(int i = 0; i < 5; i++)
-		{
-			removeLeft();
-			moveLeft();
-		}
-		
+		moveUp();
+	
 	}
 
 }

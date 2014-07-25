@@ -85,10 +85,10 @@ public class ObjectManager {
 	
 	public void removeObject(Vector2 location)
 	{
-		currentObject = objects[(int)location.x][(int)location.y];
-		if(currentObject != null)
+		//currentObject = objects[(int)location.x][(int)location.y];
+		if(objects[(int)location.x][(int)location.y] != null)
 		{
-			currentObject.remove = true;
+			objects[(int)location.x][(int)location.y].remove = true;
 		}
 	}
 	
