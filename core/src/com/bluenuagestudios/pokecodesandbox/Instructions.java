@@ -8,7 +8,7 @@ public class Instructions extends BackendInstructions
 		getClass(mainClass); 
 		//Settings here:
 		setRepeat(false);
-		setGender("female");
+		setGender("male");
 	}
 	
 	//Put variables here:
